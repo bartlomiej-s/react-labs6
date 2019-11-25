@@ -1,4 +1,5 @@
 import React from 'react'
+import AddForm from './AddForm'
 
 class App extends React.Component {
 
@@ -6,11 +7,15 @@ class App extends React.Component {
     super(props)
     this.state = {
       employees: [],
-      loaded: false
+      loaded: false,
+      adding: false
     }
+    this.addEmployee = this.addEmployee.bind(this);
+    this.cancel = this.cancel.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
-  componentDidMount() {
+  getData() {
     let url= "http://localhost:3004/employees"
     fetch(url)
       .then(resp => resp.json())
@@ -34,10 +39,30 @@ class App extends React.Component {
       })
   }
 
+  componentDidMount() {
+    this.getData();
+  }
+
+  addEmployee() {
+    this.setState({adding: true})
+  }
+
+  cancel() {
+    this.setState({adding: false})
+  }
+
+  submit() {
+  }
+
   render() {
     const AppVar = (
      <div className="App">
-       {this.state.loaded ? this.state.employees : 'Loading...'}
+       <div>
+        {this.state.loaded && <h1>Employees</h1>}
+        {this.state.loaded ? this.state.employees : 'Loading...'}
+        {this.state.loaded && <button type="button" onClick={this.addEmployee}>Add Employee</button>}
+        {this.state.loaded && this.state.adding && <AddForm cancel={this.cancel} submit={this.submit}/>}
+       </div>
      </div>
     )
     return AppVar
