@@ -8,7 +8,8 @@ class App extends React.Component {
     this.state = {
       employees: [],
       loaded: false,
-      adding: false
+      adding: false,
+      saving: false
     }
     this.addEmployee = this.addEmployee.bind(this);
     this.cancel = this.cancel.bind(this);
@@ -23,12 +24,12 @@ class App extends React.Component {
         let employees = data.map((employee, index) => {
           return (
             <div key={index}>
-              <p>ID: {employee._id}<br />
+              <p>ID: {employee.id}<br />
               Name: {employee.name}<br />
               Age: {employee.age}<br />
               Company: {employee.company}<br />
               Email: {employee.email}<br />
-              IsActive: {employee.isActive}</p>
+              IsActive: {employee.isActive ? "true" : "false"}</p>
             </div>
           )
         })
@@ -51,18 +52,25 @@ class App extends React.Component {
     this.setState({adding: false})
   }
 
-  submit() {
+  submit(data) {
+    this.setState({saving: true})
+    let url= "http://localhost:3004/employees"
+    var request = new XMLHttpRequest();
+    request.open('POST', url, true);
+    request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    request.send(data);
+    this.setState({saving: false, loaded: false})
+    this.getData()
   }
 
   render() {
     const AppVar = (
      <div className="App">
-       <div>
         {this.state.loaded && <h1>Employees</h1>}
         {this.state.loaded ? this.state.employees : 'Loading...'}
         {this.state.loaded && <button type="button" onClick={this.addEmployee}>Add Employee</button>}
+        {this.state.saving && 'Saving...'}
         {this.state.loaded && this.state.adding && <AddForm cancel={this.cancel} submit={this.submit}/>}
-       </div>
      </div>
     )
     return AppVar
