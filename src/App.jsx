@@ -14,6 +14,7 @@ class App extends React.Component {
     this.addEmployee = this.addEmployee.bind(this);
     this.cancel = this.cancel.bind(this);
     this.submit = this.submit.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   getData() {
@@ -30,6 +31,7 @@ class App extends React.Component {
               Company: {employee.company}<br />
               Email: {employee.email}<br />
               IsActive: {employee.isActive ? "true" : "false"}</p>
+              <p><button type="button" onClick={this.delete} idarg={employee.id}>Delete</button></p>
             </div>
           )
         })
@@ -63,6 +65,18 @@ class App extends React.Component {
     this.getData()
   }
 
+  delete = (event) => {
+    let id = event.target.getAttribute('idarg')
+
+    let url= "http://localhost:3004/employees/"+id
+    fetch(url, {
+			method: 'DELETE'
+    })
+    
+    this.setState({loaded: false})
+    this.getData()
+  }
+
   render() {
     const AppVar = (
      <div className="App">
@@ -73,6 +87,7 @@ class App extends React.Component {
         {this.state.loaded && this.state.adding && <AddForm cancel={this.cancel} submit={this.submit}/>}
      </div>
     )
+
     return AppVar
   }
 
