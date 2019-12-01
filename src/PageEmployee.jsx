@@ -1,6 +1,7 @@
 import React from 'react'
 import {
-  Link
+  Link,
+  withRouter
 } from "react-router-dom"
 
 class PageEmployee extends React.Component {
@@ -8,6 +9,7 @@ class PageEmployee extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      saveMessage: ""
     }
     this.submit = this.submit.bind(this)
   }
@@ -27,7 +29,33 @@ class PageEmployee extends React.Component {
       email: emailpom,
       isActive: isActivepom2
     })
-    if (namepom!="" && !isNaN(agepom) && companypom!="" && emailpom!="") this.props.submit(data)
+    if (namepom!="" && !isNaN(agepom) && companypom!="" && emailpom!="")
+    {
+      const f = () => this.props.history.push("/")
+      this.submitInner(data, f)
+    }
+    else
+    {
+      this.setState({saveMessage: 'Error, wrong data types!'})
+    }
+  }
+
+  submitInner(data, _callback) {
+    this.setState({saveMessage: 'Saving...'})
+    let k = true
+    try {
+      let url= "http://localhost:3004/employees"
+      var request = new XMLHttpRequest();
+      request.open('POST', url, false);
+      request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+      request.send(data);
+    }
+    catch (e)
+    {
+      k = false
+      this.setState({saveMessage: 'Error, data not saved!'})
+    }
+    if (k) _callback()
   }
 
   render() {
@@ -40,6 +68,7 @@ class PageEmployee extends React.Component {
         <p>IsActive: <input type="text" name="isactive" style={{float: 'right', width:'85%'}}/></p>
         <p><button type="button" onClick={this.submit}>Submit</button>
         <Link to="/"><button type="button">Cancel</button></Link></p>
+        {this.state.saveMessage}
       </div>
     )
     return AppVar
@@ -47,4 +76,4 @@ class PageEmployee extends React.Component {
 
 }
 
-export default PageEmployee
+export default withRouter(PageEmployee)

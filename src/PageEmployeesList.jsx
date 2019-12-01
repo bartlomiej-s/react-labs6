@@ -11,10 +11,8 @@ class PageEmployeesList extends React.Component {
     super(props)
     this.state = {
       employees: [],
-      loaded: false,
-      saving: false
+      loaded: false
     }
-    this.submit = this.submit.bind(this);
     this.delete = this.delete.bind(this);
   }
 
@@ -45,18 +43,6 @@ class PageEmployeesList extends React.Component {
 
   componentDidMount() {
     this.getData();
-  }
-
-  submit(data) {
-    this.setState({saving: true})
-    alert(a);
-    let url= "http://localhost:3004/employees"
-    var request = new XMLHttpRequest();
-    request.open('POST', url, true);
-    request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    request.send(data);
-    this.setState({saving: false, loaded: false})
-    this.getData()
   }
 
   delete = (event) => {
@@ -92,7 +78,6 @@ class PageEmployeesList extends React.Component {
         {this.state.loaded && <h1>Employees</h1>}
         {this.state.loaded ? AppVarPom : 'Loading...'}
         {this.state.loaded && <Link to="/new"><button type="button">Create new employee</button></Link>}
-        {this.state.saving && 'Saving...'}
      </div>
     )
 
