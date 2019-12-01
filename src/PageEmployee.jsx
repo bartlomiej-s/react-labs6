@@ -1,4 +1,7 @@
 import React from 'react'
+import {
+  Link
+} from "react-router-dom"
 
 class PageEmployee extends React.Component {
 
@@ -36,7 +39,7 @@ class PageEmployee extends React.Component {
         <p>Email: <input type="text" name="email" style={{float: 'right', width:'85%'}}/></p>
         <p>IsActive: <input type="text" name="isactive" style={{float: 'right', width:'85%'}}/></p>
         <p><button type="button" onClick={this.submit}>Submit</button>
-        <button type="button" onClick={this.props.cancel}>Cancel</button></p>
+        <Link to="/"><button type="button">Cancel</button></Link></p>
       </div>
     )
     return AppVar

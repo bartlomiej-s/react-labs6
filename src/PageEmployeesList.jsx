@@ -1,5 +1,9 @@
 import React from 'react'
 import PageEmployee from './PageEmployee'
+import {
+  Link
+} from "react-router-dom"
+
 
 class PageEmployeesList extends React.Component {
 
@@ -8,11 +12,8 @@ class PageEmployeesList extends React.Component {
     this.state = {
       employees: [],
       loaded: false,
-      adding: false,
       saving: false
     }
-    this.addEmployee = this.addEmployee.bind(this);
-    this.cancel = this.cancel.bind(this);
     this.submit = this.submit.bind(this);
     this.delete = this.delete.bind(this);
   }
@@ -46,16 +47,9 @@ class PageEmployeesList extends React.Component {
     this.getData();
   }
 
-  addEmployee() {
-    this.setState({adding: true})
-  }
-
-  cancel() {
-    this.setState({adding: false})
-  }
-
   submit(data) {
     this.setState({saving: true})
+    alert(a);
     let url= "http://localhost:3004/employees"
     var request = new XMLHttpRequest();
     request.open('POST', url, true);
@@ -97,9 +91,8 @@ class PageEmployeesList extends React.Component {
      <div className="App">
         {this.state.loaded && <h1>Employees</h1>}
         {this.state.loaded ? AppVarPom : 'Loading...'}
-        {this.state.loaded && <button type="button" onClick={this.addEmployee}>Add Employee</button>}
+        {this.state.loaded && <Link to="/new"><button type="button">Create new employee</button></Link>}
         {this.state.saving && 'Saving...'}
-        {this.state.loaded && this.state.adding && <PageEmployee cancel={this.cancel} submit={this.submit}/>}
      </div>
     )
 
