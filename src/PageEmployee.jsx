@@ -1,6 +1,6 @@
 import React from 'react'
 
-class AddForm extends React.Component {
+class PageEmployee extends React.Component {
 
   constructor(props) {
     super(props)
@@ -44,4 +44,4 @@ class AddForm extends React.Component {
 
 }
 
-export default AddForm
+export default PageEmployee
