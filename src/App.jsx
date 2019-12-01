@@ -31,7 +31,7 @@ class App extends React.Component {
               Company: {employee.company}<br />
               Email: {employee.email}<br />
               IsActive: {employee.isActive ? "true" : "false"}</p>
-              <p><button type="button" onClick={this.delete} idarg={employee.id}>Delete</button></p>
+              <p><button type="button" onClick={this.delete} idarg={employee.id} indexarg={index}>Delete</button></p>
             </div>
           )
         })
@@ -67,21 +67,36 @@ class App extends React.Component {
 
   delete = (event) => {
     let id = event.target.getAttribute('idarg')
-
+    let index = event.target.getAttribute('indexarg')
+    this.state.employees[index] = (
+      <div key={index}>
+        <p>Deleting...</p>
+        <p><button type="button">Delete</button></p>
+      </div>
+    )
+    this.setState({employees: this.state.employees})
     let url= "http://localhost:3004/employees/"+id
     fetch(url, {
 			method: 'DELETE'
     })
-    
     this.setState({loaded: false})
     this.getData()
   }
 
   render() {
+    const AppVarPom = (
+      <div>
+      {this.state.employees.map((p, i) => {
+        return (
+          p
+        )
+      })}
+      </div>
+    )
     const AppVar = (
      <div className="App">
         {this.state.loaded && <h1>Employees</h1>}
-        {this.state.loaded ? this.state.employees : 'Loading...'}
+        {this.state.loaded ? AppVarPom : 'Loading...'}
         {this.state.loaded && <button type="button" onClick={this.addEmployee}>Add Employee</button>}
         {this.state.saving && 'Saving...'}
         {this.state.loaded && this.state.adding && <AddForm cancel={this.cancel} submit={this.submit}/>}
